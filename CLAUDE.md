@@ -10,7 +10,7 @@ Personal website for Joachim Chuah: Malaysian professional squash player (PSA Wo
 - **Focus on the work, not trophies.** Two halves: "The work · on court" (training, schedule, ranking chart, media reach) and "The work · off court" (coding projects). Achievements are kept to one scrolling ticker.
 - **Confident but honest.** It should feel elite, but never claim he is the world's best. Use true lines, for example "Tipped by the world No. 1 as a future top-10 player".
 - **Inspired by joshwcomeau.com.** Friendly first-person voice ("Hey, I'm Joachim 👋"), sounds on hover and click, sparkles, springy hovers, a mascot, and a dark mode toggle.
-- **Brand:** navy `#0A1530`, yellow `#FFC72C` (the pro squash ball's double yellow dot is the motif), court red `#D7263D`, paper `#F4F1EA`. Fonts: Bricolage Grotesque (display), Inter (body), JetBrains Mono (labels).
+- **Brand ("Glass court" palette, Nov 2026):** near-black `#0A0F14` (`--navy`), electric lime `#C6F432` (`--lime`, main accent; also the ball dots), glass blue `#38BDF8` (`--glass`; `--glass-ink` `#0369A1` for blue text on light backgrounds), paper `#EEF3F6`. Red-pink (`#ff7a8a`) is kept only for losses/negative numbers. Fonts: Bricolage Grotesque (display), Inter (body), JetBrains Mono (labels).
 
 ## Interactive pieces (all in index.html)
 - **Hero squash game:** a canvas court with out line, service line and tin. Tap to hit the ball. Rally counter, best score in localStorage, confetti every 10 shots.
