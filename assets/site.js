@@ -47,10 +47,10 @@ const Snd=(()=>{
 
 /* ---------- theme toggle ----------
    The <head> of each page sets data-theme before paint (saved choice, else the OS setting).
-   Puts the button in [data-theme-slot] if the page has one, otherwise in the mockup switcher bar. */
+   Puts the button in the page's [data-theme-slot]. */
 (function(){
   const root=document.documentElement;
-  const slot=document.querySelector('[data-theme-slot]')||document.querySelector('.switch div');if(!slot)return;
+  const slot=document.querySelector('[data-theme-slot]');if(!slot)return;
   const b=document.createElement('button');b.type='button';b.className='theme-btn';
   b.innerHTML='<svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg>';
   function label(){const d=root.dataset.theme==='dark';b.setAttribute('aria-label',d?'Switch to light mode':'Switch to dark mode');b.title=d?'Light mode':'Dark mode'}
@@ -60,7 +60,7 @@ const Snd=(()=>{
 })();
 
 (function(){
-  const slot=document.querySelector('[data-theme-slot]')||document.querySelector('.switch div');if(!slot)return;
+  const slot=document.querySelector('[data-theme-slot]');if(!slot)return;
   const b=document.createElement('button');b.type='button';b.className='theme-btn snd-btn';
   b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z" fill="currentColor"/><g class="waves"><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></g><g class="x"><path d="m16 9 5 6M21 9l-5 6"/></g></svg>';
   function sync(){document.documentElement.classList.toggle('muted',!Snd.on);b.setAttribute('aria-label',Snd.on?'Turn sounds off':'Turn sounds on');b.title=Snd.on?'Sound on':'Sound off'}
@@ -69,7 +69,7 @@ const Snd=(()=>{
   slot.insertBefore(b,slot.querySelector('.theme-btn'));
 })();
 
-/* Shared behaviour for the minimal mockups: clocks, quote of the day, mini rally. */
+/* Site behaviour: sounds, theme toggle, clocks, quote of the day, fact of the day, mini rally. */
 
 /* ---------- clocks: any element with data-tz gets HH:MM in that time zone ---------- */
 (function(){

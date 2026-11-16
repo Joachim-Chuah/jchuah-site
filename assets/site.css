@@ -1,4 +1,4 @@
-/* Shared base for the minimal mockups */
+/* Site styles: tokens, sections, quote card, rally game, toggles */
 :root{
   --bg:#F7F7F4; --surface:#EEEEE9; --text:#141414; --body:#3B3B3B; --muted:#8B8B86; --rule:#E2E2DC;
   --lime:#C6F432; --hl:rgba(198,244,50,.6); --glass:#0369A1; --glass-bg:rgba(56,189,248,.14); --dot:#F5C518;
@@ -17,12 +17,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hl{background:linear-gradient(transparent 58%,var(--hl) 58%);color:var(--text);padding:0 .1em}
 .muted{color:var(--muted)}
 
-/* mockup switcher (remove before launch) */
-.switch{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--rule);font-size:.78rem}
-.switch div{max-width:700px;margin:0 auto;padding:10px 24px;display:flex;gap:6px 18px;flex-wrap:wrap;align-items:center}
-.switch span{color:var(--muted)}
-.switch a{color:var(--muted)}
-.switch a[aria-current]{color:var(--text);font-weight:600;background:linear-gradient(transparent 58%,var(--hl) 58%)}
 
 /* section labels with squash-ball dots */
 section{margin-top:72px}
@@ -83,11 +77,8 @@ footer{margin-top:72px;font-size:.78rem;color:var(--muted)}
 .theme-btn .moon{display:none}
 :root[data-theme=dark] .theme-btn .sun{display:none}
 :root[data-theme=dark] .theme-btn .moon{display:block}
-.switch .theme-btn{margin-left:auto;width:28px;height:28px}
 body{transition:background-color .3s,color .3s}
 .snd-btn .x{display:none}
 .muted .snd-btn .waves{display:none}
 .muted .snd-btn .x{display:inline}
 [data-theme-slot]{display:flex;gap:2px}
-.switch .snd-btn{margin-left:auto}
-.switch .snd-btn + .theme-btn{margin-left:0}
