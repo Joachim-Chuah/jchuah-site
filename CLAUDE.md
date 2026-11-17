@@ -25,7 +25,7 @@ The site is a **logbook**: a minimal, single-column, dated log of squash results
 - Minimal and calm. Modest tone: let facts speak, avoid a highlight-reel feel (a chapter-style "story" version was rejected as too self-centred).
 - Joachim writes the personal stories and margin notes himself; don't invent feelings or anecdotes for him. Facts come from his partnership deck (keep pricing and phone numbers off the site).
 - Brand: lime `#C6F432` (highlights), ball-dot yellow `#F5C518`, blue ink for handwriting, Inter (body), Bricolage Grotesque (display), JetBrains Mono (labels), Kalam (handwriting).
-- Favicon: illustration by Joachim's sister (@alexandraws17_); use is fine.
+- Favicon: 3D toy figure of Joachim (from toy_me_front.png, Nov 2026); replaced the earlier illustration by his sister. Favicon = head only, background removed (transparent); apple-touch-icon keeps the grey backdrop (iOS fills transparency with black). Favicon links carry ?v=N: bump it when the icon changes, since browsers cache favicons hard.
 - Contact email on the site: jchuah.han@gmail.com.
 
 ## Open items

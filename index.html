@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Joachim Chuah</title>
 <meta name="description" content="Joachim Chuah: professional squash player on the PSA World Tour for Malaysia, and software engineer. Results, things I’m building, and the road to LA 2028.">
-<link rel="icon" type="image/png" href="img/favicon.png">
-<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="img/favicon.png?v=3">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400&display=swap" rel="stylesheet">
@@ -40,6 +40,18 @@ header p{font-size:.9rem;color:var(--muted)}
 /* log */
 .year{font-family:var(--display);font-weight:700;font-size:1.05rem;color:var(--text);margin:30px 0 4px;display:flex;align-items:center;gap:10px}
 .year:after{content:"";flex:1;height:1px;background:var(--rule)}
+.year .ch{width:2.8em;flex:none;display:flex}
+.year .ch b{font-family:"Times New Roman",Times,serif;font-weight:400;font-size:1.1em;letter-spacing:.03em;color:var(--text);display:inline-block;line-height:1;position:relative;isolation:isolate;padding:0 .15em}
+/* soft lime glow behind each chapter numeral, gently breathing */
+.year .ch b:before{content:"";position:absolute;inset:-.45em -.55em;z-index:-1;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(198,244,50,.75),rgba(198,244,50,.25) 55%,transparent);filter:blur(5px);
+  animation:chGlow 4s ease-in-out infinite}
+:root[data-theme=dark] .year .ch b{text-shadow:0 0 10px rgba(198,244,50,.55)}
+:root[data-theme=dark] .year .ch b:before{background:radial-gradient(closest-side,rgba(198,244,50,.45),rgba(198,244,50,.12) 60%,transparent)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .year .ch b{text-shadow:0 0 10px rgba(198,244,50,.55)}
+  :root:not([data-theme=light]) .year .ch b:before{background:radial-gradient(closest-side,rgba(198,244,50,.45),rgba(198,244,50,.12) 60%,transparent)}}
+@keyframes chGlow{0%,100%{opacity:.75;transform:scale(.92)}50%{opacity:1;transform:scale(1.08)}}
+@media (prefers-reduced-motion:reduce){.year .ch b:before{animation:none}}
 .entry{display:grid;grid-template-columns:62px 52px 1fr;gap:14px;padding:10px 0;align-items:baseline}
 .entry .d{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
 .tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.15em .45em;border-radius:4px;text-align:center}
@@ -150,10 +162,10 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
       <button type="button" data-f="life" aria-pressed="false">Life</button>
     </div>
 
-    <div class="year">Next</div>
+    <div class="year"><span class="ch" aria-label="Chapter V"><b>V</b></span>Next</div>
     <div class="entry" data-k="court"><span class="d">Dec 2026</span><span class="tag next">Next</span><span class="t">World Team Championships, Cheongju<small>Playing for Malaysia</small></span></div>
 
-    <div class="year">2026</div>
+    <div class="year"><span class="ch" aria-label="Chapter IV"><b>IV</b></span>2026</div>
     <div class="entry" data-k="court"><span class="d">Nov</span><span class="tag court">Court</span><span class="t">Asian Teams bronze, Islamabad<small>Three wins from three, all in straight games, including Alex Lau at No. 1</small></span></div>
     <div class="entry" data-k="code"><span class="d">Nov</span><span class="tag code">Code</span><span class="t"><a href="https://github.com/Joachim-Chuah/regression-classification-model">r-c-model</a> keeps shipping<small>Predictions twice a day, retrained every week</small></span></div>
     <div class="entry" data-k="court"><span class="d">19 Oct</span><span class="tag court">Court</span><span class="t">Career-high <span class="hl">World #57</span>, Malaysia No. 2<small>“My goal was to break into the top 70 this season.”</small></span></div>
@@ -162,18 +174,18 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
     <div class="entry" data-k="court" data-post="chennai"><span class="d">Jul</span><span class="tag court">Court</span><span class="t">Chennai PSA Challenger champion<small>PSA title No. 5</small></span></div>
     <div class="entry" data-k="life"><span class="d">May</span><span class="tag life">Life</span><span class="t">Graduated, BSc Computer Science, Trinity<small>Hyder Trophy runner-up, one win from the World Championships main draw</small></span></div>
     <div class="entry" data-k="code"><span class="d">Apr</span><span class="tag code">Code</span><span class="t"><a href="https://github.com/Joachim-Chuah/athlete-tournament-tracker">Athlete Tournament Tracker</a><small>Will this tournament make or lose money? A P&amp;L before you book</small></span></div>
-    <div class="entry" data-k="court" data-post="skillman"><span class="d">2026</span><span class="tag court">Court</span><span class="t">Skillman Award, first Malaysian winner<small>And 19–0 national champions with Trinity, as captain</small></span></div>
+    <div class="entry" data-k="court" data-post="skillman"><span class="d">2026</span><span class="tag life">Life</span><span class="t">Skillman Award, first Malaysian winner<small>And 19–0 national champions with Trinity, as captain</small></span></div>
     <div class="entry" data-k="code"><span class="d">Jan</span><span class="tag code">Code</span><span class="t"><a href="https://github.com/Joachim-Chuah/rylo">Rylo</a><small>Stock sentiment from StockTwits and Reddit, with FinBERT</small></span></div>
 
-    <div class="year">2025</div>
+    <div class="year"><span class="ch" aria-label="Chapter III"><b>III</b></span>2025</div>
     <div class="entry" data-k="court"><span class="d">2025</span><span class="tag court">Court</span><span class="t">PSA titles in Kelowna and Atlanta<small>Senior debut for Malaysia, Kuching · NESCAC Player of the Year</small></span></div>
 
-    <div class="year">2024</div>
+    <div class="year"><span class="ch" aria-label="Chapter II"><b>II</b></span>2024</div>
     <div class="entry" data-k="court"><span class="d">Jun</span><span class="tag court">Court</span><span class="t">PSA Player of the Month</span></div>
     <div class="entry" data-k="court"><span class="d">2024</span><span class="tag court">Court</span><span class="t">First PSA titles: Hong Kong and Perth<small>SUKMA men’s individual gold</small></span></div>
     <div class="entry" data-k="code"><span class="d">Feb</span><span class="tag code">Code</span><span class="t"><a href="https://github.com/Joachim-Chuah/RESTful-microservice">RESTful Microservice</a><small>Node.js API on Docker and Kubernetes</small></span></div>
 
-    <div class="year">Before</div>
+    <div class="year"><span class="ch" aria-label="Chapter I"><b>I</b></span>2015–2023</div>
     <div class="entry" data-k="court" data-post="world-juniors-2023"><span class="d">2023</span><span class="tag court">Court</span><span class="t">My last World Juniors<small>Pressure on, lost to the eventual winner, loved every second</small></span></div>
     <div class="entry" data-k="court" data-post="asian-junior-2023"><span class="d">2023</span><span class="tag court">Court</span><span class="t">Asian Junior Champion (U19)<small>Championship ball down in the final, a year after losing the same final</small></span></div>
     <div class="entry" data-k="life" data-post="trinity-2022"><span class="d">Sep 2022</span><span class="tag life">Life</span><span class="t">Freshman year at Trinity College<small>Tough at first. Then New York, a nationals final, and a whole new life</small></span></div>
