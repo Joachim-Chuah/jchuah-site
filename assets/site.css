@@ -10,6 +10,7 @@
 }
 :root[data-theme=dark]{--bg:#0E1114; --surface:#161A1E; --text:#EEF1F3; --body:#C3C8CC; --muted:#7B848B; --rule:#232A30; --hl:rgba(198,244,50,.28); --glass:#38BDF8; --glass-bg:rgba(56,189,248,.14); color-scheme:dark}
 *{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}   /* hidden always wins, even over display:grid/flex rules */
 body{background:var(--bg);color:var(--body);font-family:var(--font);font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}

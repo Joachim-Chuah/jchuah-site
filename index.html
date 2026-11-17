@@ -11,10 +11,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400&display=swap" rel="stylesheet">
 <script>try{var t=localStorage.getItem('jc-theme');document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}</script>
-<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/site.css?v=2">
 <style>
 header{display:flex;align-items:center;gap:16px;margin-top:20px}
-.avatar{width:56px;height:56px;border-radius:50%;object-fit:cover}
+.avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;display:block}
+.avatar-btn{border-radius:50%;cursor:zoom-in;transition:transform .35s cubic-bezier(.34,1.56,.64,1);flex:none}
+.avatar-btn:hover{transform:scale(1.06)}
+.avatar-btn:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+/* profile photo lightbox */
+.lightbox{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:24px;cursor:zoom-out;
+  background:rgba(8,10,12,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);opacity:0;transition:opacity .3s}
+.lightbox[hidden]{display:none}
+.lightbox.open{opacity:1}
+.lightbox img{max-height:min(82vh,900px);max-width:min(90vw,640px);border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.45);transform-origin:center}
+.lightbox .cap{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-family:'Kalam',cursive;font-size:1.05rem;color:#fff;opacity:.85}
 header .who{flex:1}
 header h1{font-family:var(--display);font-size:1.3rem;font-weight:700;color:var(--text);line-height:1.2}
 header p{font-size:.9rem;color:var(--muted)}
@@ -35,6 +45,9 @@ header p{font-size:.9rem;color:var(--muted)}
 .tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.15em .45em;border-radius:4px;text-align:center}
 .tag.court{background:var(--hl);color:var(--text)}
 .tag.code{background:var(--glass-bg);color:var(--glass)}
+.tag.life{background:rgba(245,197,24,.2);color:#8A6A00}
+:root[data-theme=dark] .tag.life{color:#F5C518}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .tag.life{color:#F5C518}}
 .tag.next{background:var(--text);color:var(--bg)}
 .entry .t{color:var(--text)}
 .entry .t a{border-bottom:1px solid var(--rule)}
@@ -94,7 +107,8 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
 .post em{color:var(--muted)}
 .post h2,.post h3{font-family:var(--display);color:var(--text);margin:1.4em 0 .5em;font-size:1.2rem;display:block}
 .post figure{margin:1.4em -8px}
-.post figure img{width:100%;border-radius:12px;display:block}
+.post figure img,.post figure video{width:100%;border-radius:12px;display:block;background:var(--surface)}
+.post figure video{max-height:70vh;object-fit:contain}
 .post figcaption{font-family:'Kalam',cursive;font-size:1rem;color:var(--ink);margin-top:6px;padding-left:4px}
 .post blockquote{border-left:2px solid var(--lime);padding-left:14px;margin:1.4em 0;color:var(--text);font-family:var(--display);font-size:1.1rem;line-height:1.35}
 .post blockquote p:last-child{font-family:var(--font);font-size:.85rem;color:var(--muted);margin:6px 0 0}
@@ -115,7 +129,7 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
 <body>
 <main class="page">
   <header>
-    <img class="avatar" src="img/avatar.jpg" alt="Joachim Chuah">
+    <button class="avatar-btn" id="avatarBtn" type="button" aria-label="View profile photo"><img class="avatar" src="img/avatar.jpg" alt="Joachim Chuah"></button>
     <div class="who"><h1>Joachim Chuah</h1><p>Athlete &amp; engineer</p></div>
     <div class="clocks">Hartford <b data-tz="America/New_York">--:--</b><br>KL <b data-tz="Asia/Kuala_Lumpur">--:--</b></div>
     <div data-theme-slot></div>
@@ -134,6 +148,7 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
       <button type="button" data-f="all" aria-pressed="true">All</button>
       <button type="button" data-f="court" aria-pressed="false">Court</button>
       <button type="button" data-f="code" aria-pressed="false">Code</button>
+      <button type="button" data-f="life" aria-pressed="false">Life</button>
     </div>
 
     <div class="year">Next</div>
@@ -146,7 +161,7 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
     <div class="entry" data-k="court" data-post="egyptian-open"><span class="d">Oct</span><span class="tag court">Court</span><span class="t">CIB Egyptian Open, PSA Diamond<small>Through qualifying, first Diamond win 3–0, then a game off world No. 1 Mostafa Asal</small></span></div>
     <div class="entry" data-k="court"><span class="d">Sep</span><span class="tag court">Court</span><span class="t">NASH Cup champion, London, Ontario<small>PSA title No. 6</small></span></div>
     <div class="entry" data-k="court" data-post="chennai"><span class="d">Jul</span><span class="tag court">Court</span><span class="t">Chennai PSA Challenger champion<small>PSA title No. 5</small></span></div>
-    <div class="entry" data-k="court"><span class="d">May</span><span class="tag court">Court</span><span class="t">Graduated, BSc Computer Science, Trinity<small>Hyder Trophy runner-up, one win from the World Championships main draw</small></span></div>
+    <div class="entry" data-k="life"><span class="d">May</span><span class="tag life">Life</span><span class="t">Graduated, BSc Computer Science, Trinity<small>Hyder Trophy runner-up, one win from the World Championships main draw</small></span></div>
     <div class="entry" data-k="code"><span class="d">Apr</span><span class="tag code">Code</span><span class="t"><a href="https://github.com/Joachim-Chuah/athlete-tournament-tracker">Athlete Tournament Tracker</a><small>Will this tournament make or lose money? A P&amp;L before you book</small></span></div>
     <div class="entry" data-k="court" data-post="skillman"><span class="d">2026</span><span class="tag court">Court</span><span class="t">Skillman Award, first Malaysian winner<small>And 19–0 national champions with Trinity, as captain</small></span></div>
     <div class="entry" data-k="code"><span class="d">Jan</span><span class="tag code">Code</span><span class="t"><a href="https://github.com/Joachim-Chuah/rylo">Rylo</a><small>Stock sentiment from StockTwits and Reddit, with FinBERT</small></span></div>
@@ -160,10 +175,12 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
     <div class="entry" data-k="code"><span class="d">Feb</span><span class="tag code">Code</span><span class="t"><a href="https://github.com/Joachim-Chuah/RESTful-microservice">RESTful Microservice</a><small>Node.js API on Docker and Kubernetes</small></span></div>
 
     <div class="year">Before</div>
-    <div class="entry" data-k="court"><span class="d">2023</span><span class="tag court">Court</span><span class="t">Asian Junior Champion (U19), World Junior No. 6</span></div>
-    <div class="entry" data-k="court"><span class="d">2022</span><span class="tag court">Court</span><span class="t">World Juniors team bronze, playing No. 1 for Malaysia</span></div>
-    <div class="entry" data-k="court" data-post="asian-junior-2017"><span class="d">2017</span><span class="tag court">Court</span><span class="t">Asian Junior Champion (U13), Asia No. 1<small>Diving for every ball, even then</small></span></div>
-    <div class="entry" data-k="court"><span class="d">2015</span><span class="tag court">Court</span><span class="t">Hong Kong Junior Open champion (U11)<small>Where it started</small></span></div>
+    <div class="entry" data-k="court" data-post="world-juniors-2023"><span class="d">2023</span><span class="tag court">Court</span><span class="t">My last World Juniors<small>Pressure on, lost to the eventual winner, loved every second</small></span></div>
+    <div class="entry" data-k="court" data-post="asian-junior-2023"><span class="d">2023</span><span class="tag court">Court</span><span class="t">Asian Junior Champion (U19)<small>Championship ball down in the final, a year after losing the same final</small></span></div>
+    <div class="entry" data-k="life" data-post="trinity-2022"><span class="d">Sep 2022</span><span class="tag life">Life</span><span class="t">Freshman year at Trinity College<small>Tough at first. Then New York, a nationals final, and a whole new life</small></span></div>
+    <div class="entry" data-k="court" data-post="world-juniors-2022"><span class="d">2022</span><span class="tag court">Court</span><span class="t">World Juniors team bronze, playing No. 1 for Malaysia<small>The first time I thought I could actually be something in this sport</small></span></div>
+    <div class="entry" data-k="court" data-post="asian-junior-2017"><span class="d">2017</span><span class="tag court">Court</span><span class="t">Asian Junior Champion (U13), Asia No. 1<small>Jordan. A sketchy bridge, Subway almost every day, and my eyes opening for the first time</small></span></div>
+    <div class="entry" data-k="court" data-post="hk-junior-2015"><span class="d">2015</span><span class="tag court">Court</span><span class="t">Hong Kong Junior Open champion (U11)<small>Two years into squash, and just happy to be somewhere new</small></span></div>
 
     <button class="rally-link" id="rallyBtn" type="button" aria-controls="court"><span class="ball" aria-hidden="true"></span><span class="lbl">Wanna rally?</span></button>
     <div class="court" id="court" hidden></div>
@@ -176,6 +193,7 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
   </section>
   <footer>© 2026 Joachim Chuah · Kuala Lumpur → Hartford → LA 2028</footer>
 </main>
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-label="Profile photo"><img src="img/avatar-large.jpg" alt="Joachim Chuah"><div class="cap">click anywhere to close</div></div>
 <div class="scrim" id="scrim"></div>
 <aside class="reader" id="reader" aria-label="Story" aria-hidden="true">
   <div class="reader-inner">
@@ -185,8 +203,34 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
     <div class="post" id="rBody"></div>
   </div>
 </aside>
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=2"></script>
 <script>
+/* ===== Profile photo: grows out of the avatar into a large view, shrinks back on close ===== */
+(function(){
+  const btn=document.getElementById('avatarBtn'),box=document.getElementById('lightbox'),img=box.querySelector('img');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fromAvatar(){                       // transform that puts the big photo exactly over the little circle
+    const a=btn.getBoundingClientRect(),b=img.getBoundingClientRect(),sc=a.width/b.width;
+    return `translate(${a.left+a.width/2-(b.left+b.width/2)}px,${a.top+a.height/2-(b.top+b.height/2)}px) scale(${sc})`;
+  }
+  function open(){
+    box.hidden=false;
+    requestAnimationFrame(()=>{box.classList.add('open');
+      if(!reduce)img.animate([{transform:fromAvatar(),borderRadius:'50%'},{transform:'none',borderRadius:'18px'}],{duration:480,easing:'cubic-bezier(.2,.9,.25,1.15)'});});
+    box.focus?.();
+  }
+  function close(){
+    if(box.hidden)return;box.classList.remove('open');
+    const done=()=>{box.hidden=true;btn.focus({preventScroll:true})};
+    if(reduce)return setTimeout(done,200);
+    img.animate([{transform:'none',borderRadius:'18px'},{transform:fromAvatar(),borderRadius:'50%'}],{duration:320,easing:'cubic-bezier(.5,0,.75,0)'}).onfinish=done;
+  }
+  box.tabIndex=-1;
+  btn.addEventListener('click',open);
+  box.addEventListener('click',close);
+  addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+})();
+
 /* ===== Posts: each story is a folder in posts/<name>/ with post.md (+ cover.jpg and any other photos) ===== */
 (function(){
   const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -200,6 +244,8 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
     const fm=body.match(/^---\n([\s\S]*?)\n---\n?/);
     if(fm){fm[1].split('\n').forEach(l=>{const i=l.indexOf(':');if(i>0)meta[l.slice(0,i).trim()]=l.slice(i+1).trim()});body=body.slice(fm[0].length)}
     const html=body.trim().split(/\n\s*\n/).map(b=>{b=b.trim();let m;
+      if((m=b.match(/^!\[([^\]]*)\]\(([^)\s]+\.(mp4|mov|m4v|webm))\)$/i))){const src=new URL(m[2],base).href;
+        return '<figure><video src="'+src+'" poster="'+src.replace(/\.[^.]+$/,'.jpg')+'" controls playsinline muted preload="metadata"></video>'+(m[1]?'<figcaption>'+esc(m[1])+'</figcaption>':'')+'</figure>'}
       if((m=b.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/)))return '<figure><img src="'+new URL(m[2],base).href+'" alt="'+esc(m[1])+'" loading="lazy">'+(m[1]?'<figcaption>'+esc(m[1])+'</figcaption>':'')+'</figure>';
       if((m=b.match(/^(#{1,3})\s+(.*)$/)))return '<h3>'+inline(m[2],base)+'</h3>';
       if(b.startsWith('>'))return '<blockquote>'+b.split('\n').map(l=>'<p>'+inline(l.replace(/^>\s?/,''),base)+'</p>').join('')+'</blockquote>';
@@ -211,15 +257,17 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
 
   const reader=document.getElementById('reader'),scrim=document.getElementById('scrim');
   let opener=null;
+  const MOVED={'csa-final-2023':'trinity-2022'};   // stories merged into another: old links still work
   async function open(slug){
+    if(MOVED[slug]){history.replaceState('',document.title,'#/'+MOVED[slug]);slug=MOVED[slug]}
     const base=new URL('posts/'+slug+'/',location.href);
     document.getElementById('rDate').textContent='';document.getElementById('rTitle').textContent='';
     document.getElementById('rBody').innerHTML='<p class="loading">Loading…</p>';
     document.body.classList.add('reading');reader.setAttribute('aria-hidden','false');reader.scrollTop=0;
-    try{const r=await fetch(new URL('post.md',base));if(!r.ok)throw 0;const {meta,html}=render(await r.text(),base);
+    try{const r=await fetch(new URL('post.md',base),{cache:'no-cache'});   // always check for the latest version of a storyif(!r.ok)throw 0;const {meta,html}=render(await r.text(),base);
       document.getElementById('rDate').textContent=meta.date||'';document.getElementById('rTitle').textContent=meta.title||'';
       document.getElementById('rBody').innerHTML=html;
-    }catch(e){document.getElementById('rBody').innerHTML='<p class="loading">Couldn’t load this story. (Opening the file directly blocks this: preview through the local server.)</p>'}
+    }catch(e){document.getElementById('rBody').innerHTML='<p class="loading">'+(location.protocol==='file:'?'Stories can’t load when the page is opened as a file. Preview it through the local server instead.':'This story isn’t here any more. It may have moved: try reloading the page.')+'</p>'}
     document.getElementById('closeReader').focus({preventScroll:true});
   }
   function close(){document.body.classList.remove('reading');reader.setAttribute('aria-hidden','true');if(opener)opener.focus({preventScroll:true})}
@@ -231,6 +279,7 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
     const p=document.createElement('div');p.className='polaroid';p.setAttribute('aria-hidden','true');
     p.innerHTML='<div class="card"><img alt="" src="posts/'+slug+'/cover.jpg"><div class="cap"></div><div class="more">click to read →</div></div>';
     p.querySelector('.cap').textContent=note?note.textContent:'';
+    p.querySelector('img').addEventListener('error',ev=>ev.target.remove());   // no cover.jpg yet: show the note on its own
     e.querySelector('.t').appendChild(p);
     const go=ev=>{if(ev.target.closest('a'))return;opener=e;location.hash='#/'+slug};
     e.addEventListener('click',go);

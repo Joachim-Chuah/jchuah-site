@@ -7,6 +7,7 @@ The site is a **logbook**: a minimal, single-column, dated log of squash results
 ## Files
 - `index.html`: the page. Header, intro, quote of the day, the log, contact. Page-specific CSS and JS (margin notes, polaroids, reading panel, Markdown reader) are inline.
 - `assets/site.css`: shared tokens (light + dark), section labels, quote card, rally game, toggles.
+- `index.html` loads them as `assets/site.css?v=N` / `assets/site.js?v=N`: **bump N whenever either file changes**, or browsers keep serving the old cached copy.
 - `assets/site.js`: sound engine, theme + sound toggles, clocks, quote of the day (`QUOTES`), fact of the day (`FACTS`), the mini rally game.
 - `posts/<slug>/post.md` + `cover.jpg` (+ any photos): one folder per story.
 - `img/`: avatar, favicon, apple-touch icon.
