@@ -1,6 +1,6 @@
 ---
 title: My last World Juniors
-date: 2023
+date: 2023 · Australia
 ---
 This was my last World Junior Championships, so the pressure was on me to do well.
 
