@@ -264,7 +264,10 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
     document.getElementById('rDate').textContent='';document.getElementById('rTitle').textContent='';
     document.getElementById('rBody').innerHTML='<p class="loading">Loading…</p>';
     document.body.classList.add('reading');reader.setAttribute('aria-hidden','false');reader.scrollTop=0;
-    try{const r=await fetch(new URL('post.md',base),{cache:'no-cache'});   // always check for the latest version of a storyif(!r.ok)throw 0;const {meta,html}=render(await r.text(),base);
+    try{
+      const r=await fetch(new URL('post.md',base),{cache:'no-cache'});   // always check for the latest version of a story
+      if(!r.ok)throw 0;
+      const {meta,html}=render(await r.text(),base);
       document.getElementById('rDate').textContent=meta.date||'';document.getElementById('rTitle').textContent=meta.title||'';
       document.getElementById('rBody').innerHTML=html;
     }catch(e){document.getElementById('rBody').innerHTML='<p class="loading">'+(location.protocol==='file:'?'Stories can’t load when the page is opened as a file. Preview it through the local server instead.':'This story isn’t here any more. It may have moved: try reloading the page.')+'</p>'}
