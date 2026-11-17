@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400&display=swap" rel="stylesheet">
 <script>try{var t=localStorage.getItem('jc-theme');document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.theme=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}</script>
-<link rel="stylesheet" href="assets/site.css?v=4">
+<link rel="stylesheet" href="assets/site.css?v=5">
 <style>
 header{display:flex;align-items:center;gap:16px;margin-top:20px}
 .avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;display:block}
@@ -109,8 +109,13 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
 .reader{position:fixed;top:0;right:0;bottom:0;width:min(500px,100vw);z-index:40;background:var(--bg);border-left:1px solid var(--rule);
   box-shadow:-20px 0 60px rgba(0,0,0,.18);overflow-y:auto;transform:translateX(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);visibility:hidden}
 .reading .reader{transform:none;visibility:visible}
-.reader-inner{padding:24px 32px 80px}
-.reader .close{position:sticky;top:0;display:flex;justify-content:flex-end;padding:12px 0;background:var(--bg);z-index:2}
+.reader{overscroll-behavior:contain}
+.reader-inner{padding:0 32px calc(80px + env(safe-area-inset-bottom))}
+/* sticky bar spans the full panel width and sits flush at the top, so photos can't peek around or above it */
+.reader .close{position:sticky;top:0;display:flex;justify-content:flex-end;margin:0 -32px 8px;padding:14px 20px 10px;background:var(--bg);z-index:2}
+.reader .close button{outline:none}
+.reader .close button:focus-visible{outline:1px solid var(--rule);outline-offset:2px;color:var(--text)}
+body.reading{overflow:hidden}
 .reader .close button{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:var(--muted);font-size:1.3rem;line-height:1}
 .reader .close button:hover{background:var(--surface);color:var(--text)}
 .reader .date{font-family:var(--mono);font-size:.74rem;color:var(--muted)}
@@ -135,7 +140,22 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
 @media (prefers-reduced-motion:reduce){.reader,.page{transition:none}}
 
 .entry[hidden],.year[hidden]{display:none}
-@media (max-width:600px){.entry{grid-template-columns:52px 1fr}.entry .d{grid-column:1/-1}}
+/* phones: name on one line with the clocks underneath; each log entry = tag + date on one line, title full width below */
+@media (max-width:600px){
+  header{flex-wrap:wrap;gap:12px 14px}
+  header .who{min-width:0}
+  header h1{white-space:nowrap}
+  .clocks{order:5;flex-basis:100%;text-align:left;padding-left:70px;display:flex;gap:14px;margin-top:-6px}
+  .clocks br{display:none}
+  .entry{grid-template-columns:auto 1fr;gap:6px 10px;padding:12px}
+  .entry .tag{grid-column:1;grid-row:1;align-self:center}
+  .entry .d{grid-column:2;grid-row:1;align-self:center}
+  .entry .t{grid-column:1/-1;grid-row:2}
+  .reader-inner{padding-left:20px;padding-right:20px}
+  .reader .close{margin:0 -20px 4px;padding:10px 12px 8px}
+  .reader h1{font-size:1.6rem}
+  .post figure{margin:1.2em -4px}
+}
 </style>
 </head>
 <body>

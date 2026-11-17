@@ -83,6 +83,6 @@ body{transition:background-color .3s,color .3s}
 .muted .snd-btn .waves{display:none}
 .muted .snd-btn .x{display:inline}
 [data-theme-slot]{display:flex;gap:2px}
-.clover{position:fixed;right:16px;bottom:14px;font-size:15px;line-height:1;opacity:.7;cursor:default;user-select:none;transition:opacity .4s,transform .6s cubic-bezier(.34,1.56,.64,1)}
+.clover{position:fixed;right:16px;bottom:calc(14px + env(safe-area-inset-bottom));font-size:15px;line-height:1;opacity:.7;cursor:default;user-select:none;transition:opacity .4s,transform .6s cubic-bezier(.34,1.56,.64,1)}
 .clover:hover{opacity:1;transform:rotate(-14deg) scale(1.35)}
 @media (prefers-reduced-motion:reduce){.clover{transition:opacity .4s}.clover:hover{transform:none}}
