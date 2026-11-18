@@ -54,7 +54,7 @@ header p{font-size:.9rem;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){.year .ch b:before{animation:none}}
 .entry{display:grid;grid-template-columns:62px 52px 1fr;gap:14px;padding:10px 0;align-items:baseline}
 .entry .d{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
-.tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.15em .45em;border-radius:4px;text-align:center}
+.tag{margin:0;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;padding:.15em .45em;border-radius:4px;text-align:center}
 .tag.court{background:var(--hl);color:var(--text)}
 .tag.code{background:var(--glass-bg);color:var(--glass)}
 .tag.life{background:rgba(245,197,24,.2);color:#8A6A00}
@@ -82,12 +82,19 @@ section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-not
   -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 14'%3E%3Cpath d='M39 6.5c-9 .8-22 1.4-35 .3M9 1.5C6.5 3.3 4.4 5 2 6.8c2.6 1.4 4.9 3.3 7.2 5.6' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain;
           mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 14'%3E%3Cpath d='M39 6.5c-9 .8-22 1.4-35 .3M9 1.5C6.5 3.3 4.4 5 2 6.8c2.6 1.4 4.9 3.3 7.2 5.6' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain}
 .entry:hover .t small,.entry:focus-within .t small{opacity:1;clip-path:inset(-10px -10px -10px 0)}
-/* no empty margin on smaller screens: write the note under the title instead */
+/* no empty margin on smaller screens: the note peeks in from the side as a small floating card (.peek, built in JS),
+   so the list never shifts or dims */
 @media (max-width:1240px){
-  .entry .t small{position:static;width:auto;max-width:44ch;display:none;margin-top:4px;transform:rotate(-1deg);clip-path:none;opacity:1}
-  .entry .t small:before{width:26px;height:10px;transform:scaleX(-1) rotate(-25deg);margin-top:.5em}
-  .entry:hover .t small,.entry:focus-within .t small{display:flex}
+  .entry .t small{display:none!important}
+  section:has(.entry.has-note:hover) .entry:not(:hover),section:has(.entry.has-note:focus-within) .entry:not(:focus-within){opacity:1}
+  .entry.has-note:hover,.entry.has-note:focus-within{background:none}
+  .entry.peeking{background:var(--surface)!important}
 }
+.peek{position:absolute;z-index:30;max-width:min(250px,68vw);padding:8px 12px 9px;border-radius:12px;background:var(--bg);border:1px solid var(--rule);
+  box-shadow:0 10px 26px rgba(0,0,0,.18);font-family:'Kalam',cursive;font-size:1.02rem;line-height:1.28;color:var(--ink);pointer-events:none;
+  opacity:0;transform:translateX(16px) rotate(-2deg);transition:opacity .18s,transform .4s cubic-bezier(.34,1.56,.64,1)}
+.peek.on{opacity:1;transform:translateX(0) rotate(-2deg)}
+@media (prefers-reduced-motion:reduce){.peek{transition:opacity .15s;transform:rotate(-2deg)}}
 @media (prefers-reduced-motion:reduce){.entry .t small{transition:opacity .15s;clip-path:none}}
 /* ---- posts: entries with data-post get a polaroid in the margin on hover, and open a reading panel on click ---- */
 .entry.has-post{cursor:pointer}
@@ -336,6 +343,34 @@ document.querySelectorAll('.entry').forEach(e=>{if(e.querySelector('.t small')){
     e.addEventListener('pointerenter',ev=>{if(ev.pointerType==='mouse')play()});
     e.addEventListener('focusin',play);
   });})();
+/* smaller screens: tap (or hover) a row and its note peeks in from the right as a little floating card,
+   tucked just under the row; tap again, tap elsewhere or scroll to put it away */
+(function(){
+  const narrow=matchMedia('(max-width:1240px)');
+  const peek=document.createElement('div');peek.className='peek';peek.setAttribute('aria-hidden','true');document.body.appendChild(peek);
+  let cur=null,y0=0;
+  function hide(){if(!cur)return;cur.classList.remove('peeking');peek.classList.remove('on');cur=null}
+  function show(e){
+    if(cur===e)return;hide();
+    peek.textContent=e.querySelector('.t small').textContent;
+    const r=e.getBoundingClientRect();peek.style.visibility='hidden';peek.style.left='0';peek.style.top='0';peek.classList.remove('on');
+    const w=peek.offsetWidth,h=peek.offsetHeight,below=r.bottom+h+12<innerHeight;
+    peek.style.left=(scrollX+Math.max(12,r.right-w-4))+'px';
+    peek.style.top=(scrollY+(below?r.bottom-4:r.top-h+4))+'px';
+    peek.style.visibility='';
+    cur=e;y0=scrollY;e.classList.add('peeking');requestAnimationFrame(()=>peek.classList.add('on'));
+  }
+  document.querySelectorAll('.entry.has-note:not([data-post])').forEach(e=>{
+    e.addEventListener('click',ev=>{if(!narrow.matches||ev.target.closest('a'))return;cur===e?hide():show(e)});
+    e.addEventListener('pointerenter',ev=>{if(narrow.matches&&ev.pointerType==='mouse')show(e)});
+    e.addEventListener('pointerleave',ev=>{if(ev.pointerType==='mouse'&&cur===e)hide()});
+    e.addEventListener('focusout',()=>{if(cur===e)hide()});
+  });
+  document.addEventListener('click',ev=>{if(cur&&!cur.contains(ev.target))hide()});
+  addEventListener('scroll',()=>{if(cur&&Math.abs(scrollY-y0)>40)hide()},{passive:true});
+  addEventListener('resize',hide);
+  narrow.addEventListener('change',hide);
+})();
 document.querySelectorAll('.filters button').forEach(b=>b.addEventListener('click',()=>{
   const f=b.dataset.f;document.querySelectorAll('.filters button').forEach(x=>x.setAttribute('aria-pressed',x===b));
   document.querySelectorAll('.entry').forEach(e=>e.hidden=f!=='all'&&e.dataset.k!==f);
