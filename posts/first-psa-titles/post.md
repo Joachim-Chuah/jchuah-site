@@ -10,8 +10,6 @@ At this point I had one foot out the door. I still didn’t know what I wanted t
 
 It was my first professional Challenger tournament, and I entered as a wildcard. I played my heart out and made it all the way to the final, but unfortunately lost to someone who was miles ahead of me in experience.
 
-![On court in Malaysia](malaysia-match.jpg)
-
 I went from 400+ in the world to about 250 in one week. Stayed ten toes down.
 
 ![Runner-up as a wildcard](malaysia-final.jpg)
@@ -35,6 +33,8 @@ Had some really good food too.
 ### Perth
 
 The week after that was in Perth. I remember it feeling super tough on the body, because I’d already played two tournaments back to back. I was hanging on by a thread.
+
+![On court in Perth](perth-match.jpg)
 
 Good venue, and I loved the people and the amazing hospitality.
 
