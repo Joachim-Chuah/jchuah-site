@@ -4,7 +4,7 @@ date: 2024 · Malaysia, Hong Kong, Perth
 ---
 ### Malaysia
 
-At this point I had one foot out the door. I still didn’t know what I wanted to do after I graduated, so this was a good test: to see my level against guys who were older and better than me.
+At this point, I already had one foot out the door, but I still didn’t know what I wanted to do after I graduated. So this was a good test: to gauge my level against guys who were older and better than me.
 
 ![ACE Challenger Tour, Malaysia](malaysia-action.jpg)
 
@@ -36,7 +36,7 @@ The week after that was in Perth. I remember it feeling super tough on the body,
 
 ![On court in Perth](perth-match.jpg)
 
-Good venue, and I loved the people and the amazing hospitality.
+Good venue, and I loved the people as well as the amazing hospitality.
 
 ![Second Challenger title, Perth](perth-title.jpg)
 

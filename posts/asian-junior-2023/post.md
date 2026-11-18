@@ -2,7 +2,7 @@
 title: Asian Junior Champion, U19
 date: 2023
 ---
-Only a handful of Malaysians have won the Asian Junior title at Under-19. For a junior, it’s about as prestigious as it gets.
+Only a handful of Malaysians have won the Under-19 Asian Junior title. For a junior, it’s about as prestigious as it can get.
 
 ![Asian Juniors, 2023](match.jpg)
 

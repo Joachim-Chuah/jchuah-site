@@ -10,6 +10,6 @@ I played pretty well, and eventually lost out to the player who went on to win i
 
 ![From the stands](stands.mp4)
 
-And of course, catching more sunsets.
+And of course, catching more sunsets in between :-)
 
 ![More sunsets](sunset.jpg)

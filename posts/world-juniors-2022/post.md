@@ -12,6 +12,6 @@ It was also the first time I actually thought I could be something in squash.
 
 ![Before and after: the medals](medals.mp4)
 
-Off the court, life was amazing. We explored Nancy together, and most of the downtime was spent running around the city with my teammates. On our last day we made it to the Eiffel Tower, and had an absolute blast.
+Life was just as amazing off the court. We explored Nancy together, and most of the downtime was spent running around the city with my teammates. On our last day, we made it to the Eiffel Tower, and had an absolute blast.
 
 ![Last day: the Eiffel Tower](eiffel.jpg)
