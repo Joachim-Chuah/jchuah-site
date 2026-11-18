@@ -147,20 +147,49 @@ body.reading{overflow:hidden}
 @media (prefers-reduced-motion:reduce){.reader,.page{transition:none}}
 
 .entry[hidden],.year[hidden]{display:none}
-/* phones: name on one line with the clocks underneath; each log entry = tag + date on one line, title full width below */
-@media (max-width:600px){
-  header{flex-wrap:wrap;gap:12px 14px}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{overflow-x:clip}
+.reader .close .bk{display:none}
+
+/* ===== Mobile mode (phones, and touch screens up to small-tablet width) =====
+   Calmer and touch-first: no hover effects, a quieter log (title first, one small grey line under it),
+   and stories open as a full-screen page with a Back button instead of a sliding side panel. */
+@media (max-width:600px), (hover:none) and (max-width:900px){
+  .page{padding:28px 20px 80px}
+  header{gap:14px;margin-top:8px}
   header .who{min-width:0}
   header h1{white-space:nowrap}
-  .clocks{order:5;flex-basis:100%;text-align:left;padding-left:70px;display:flex;gap:14px;margin-top:-6px}
-  .clocks br{display:none}
-  .entry{grid-template-columns:auto 1fr;gap:6px 10px;padding:12px}
-  .entry .tag{grid-column:1;grid-row:1;align-self:center}
-  .entry .d{grid-column:2;grid-row:1;align-self:center}
-  .entry .t{grid-column:1/-1;grid-row:2}
-  .reader-inner{padding-left:20px;padding-right:20px}
-  .reader .close{margin:0 -20px 4px;padding:10px 12px 8px}
-  .reader h1{font-size:1.6rem}
+  .clocks,.snd-btn{display:none!important}
+  .entry{-webkit-tap-highlight-color:transparent}
+
+  /* log: title on top, then "● Court · Nov" in small grey; stories get "Read →" */
+  .entry{grid-template-columns:auto auto 1fr;gap:3px 8px;padding:11px 12px;align-items:center}
+  .entry .t{grid-column:1/-1;grid-row:1;font-size:1rem;line-height:1.35}
+  .entry .tag{grid-column:1;grid-row:2;background:none!important;padding:0;border-radius:0;font-size:.6rem;letter-spacing:.06em;color:var(--muted)!important;display:flex;align-items:center;gap:6px}
+  .entry .tag:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--muted)}
+  .entry .tag.court:before{background:var(--lime)}
+  .entry .tag.code:before{background:#38BDF8}
+  .entry .tag.life:before{background:#F5C518}
+  .entry .tag.next:before{background:var(--text)}
+  .entry .d{grid-column:2;grid-row:2;font-size:.66rem}
+  .entry .d:before{content:"·";margin-right:8px}
+  .entry .t:after{display:none!important}
+  .entry.has-note:not(.has-post) .d:after{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--dot);margin-left:9px;vertical-align:middle}
+  .entry.has-post .d:after{content:"Read →";font-family:var(--font);color:var(--ink);margin-left:10px;letter-spacing:0}
+  .entry:hover,.entry:focus-within{background:none!important}
+  section .entry{opacity:1!important}
+
+  /* stories: full-screen page that fades in (no off-screen panel, which made some phones zoom out) */
+  .reader{width:100%;border:0;box-shadow:none;transform:none;opacity:0;transition:opacity .25s,visibility 0s .25s}
+  .reading .reader{opacity:1;transition:opacity .25s}
+  .reading .page{transform:none}
+  .scrim{display:none}
+  .reader-inner{padding:0 20px calc(64px + env(safe-area-inset-bottom))}
+  .reader .close{justify-content:flex-start;margin:0 -20px 6px;padding:10px 12px 8px;border-bottom:1px solid var(--rule)}
+  .reader .close button{width:auto;height:auto;border-radius:99px;padding:6px 10px;font-size:.92rem;color:var(--text)}
+  .reader .close .x{display:none}
+  .reader .close .bk{display:inline}
+  .reader h1{font-size:1.6rem;margin-top:12px}
   .post figure{margin:1.2em -4px}
 }
 </style>
@@ -237,13 +266,13 @@ body.reading{overflow:hidden}
 <div class="scrim" id="scrim"></div>
 <aside class="reader" id="reader" aria-label="Story" aria-hidden="true">
   <div class="reader-inner">
-    <div class="close"><button type="button" id="closeReader" aria-label="Close story">×</button></div>
+    <div class="close"><button type="button" id="closeReader" aria-label="Close story"><span class="x" aria-hidden="true">×</span><span class="bk" aria-hidden="true">← Back</span></button></div>
     <div class="date" id="rDate"></div>
     <h1 id="rTitle"></h1>
     <div class="post" id="rBody"></div>
   </div>
 </aside>
-<script src="assets/site.js?v=2"></script>
+<script src="assets/site.js?v=3"></script>
 <script>
 /* ===== Profile photo: grows out of the avatar into a large view, shrinks back on close ===== */
 (function(){

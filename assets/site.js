@@ -28,7 +28,7 @@ const Snd=(()=>{
   return{
     get on(){return on},
     set(v){on=v;try{localStorage.setItem('jc-sound',v?'on':'off')}catch(e){}},
-    play(n){if(!on||!ctx||ctx.state!=='running')return;
+    play(n){if(!on||!ctx||ctx.state!=='running'||matchMedia('(max-width:600px), (hover:none) and (max-width:900px)').matches)return;
       if(n==='hover'){const now=performance.now();if(now-lastHover<45)return;lastHover=now}
       try{sounds[n]()}catch(e){}}
   };

@@ -28,4 +28,6 @@ Apart from that: training hard, spending time at home, having a lot of fun with 
 
 ![Home](home-sofa.jpg)
 
+![Dinner at home](home-dinner.jpg)
+
 ![Delicious food](home-feast.jpg)

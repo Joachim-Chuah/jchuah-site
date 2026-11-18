@@ -46,6 +46,4 @@ Love a good sunset pic.
 
 ![Sunset in Perth](perth-sunset.jpg)
 
-![Perth](perth-table.jpg)
-
 Off the back of those three weeks, I was lucky enough to be named PSA Player of the Month.
