@@ -147,6 +147,78 @@ body.reading{overflow:hidden}
 @media (prefers-reduced-motion:reduce){.reader,.page{transition:none}}
 
 .entry[hidden],.year[hidden]{display:none}
+/* ===== On the road: flight-log map (real land dots, Natural Earth), one quiet stats line, next-up strip, trip list ===== */
+:root{--trip-line:#6E9200;--trip-glow:transparent}
+:root[data-theme=dark]{--trip-line:var(--lime);--trip-glow:rgba(198,244,50,.6)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--trip-line:var(--lime);--trip-glow:rgba(198,244,50,.6)}}
+.trips-map{position:relative;width:100%;aspect-ratio:280/104;border-radius:16px;border:1px solid var(--rule);overflow:hidden;background:var(--surface)}
+.trips-map:before{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--muted) 55%,transparent);
+  -webkit-mask:url(img/world-dots.svg) center/100% 100% no-repeat;mask:url(img/world-dots.svg) center/100% 100% no-repeat}
+.trips-map svg.routes{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.trips-map .route{filter:drop-shadow(0 0 3px var(--trip-glow))}
+.trip{position:absolute;transform:translate(-50%,-50%);width:30px;height:30px;display:grid;place-items:center;border-radius:50%;-webkit-tap-highlight-color:transparent}
+.trip i{width:8px;height:8px;border-radius:50%;background:var(--trip-line);box-shadow:0 0 0 2px var(--surface);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.trip.home i{background:#86B4FF}
+.trip.going i{background:transparent;box-shadow:0 0 0 2px var(--text)}
+@keyframes trip-pulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--text) 45%,transparent)}50%{box-shadow:0 0 0 9px transparent}}
+.trip.going:after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;animation:trip-pulse 2.4s ease-in-out infinite}
+.trip:hover i,.trip:focus-visible i,.trip.on i{transform:scale(1.7)}
+.trip:focus-visible{outline:none}
+.trip-plane{position:absolute;width:18px;height:18px;margin:-9px;color:var(--text);pointer-events:none}
+.trip-tip{position:absolute;transform:translate(var(--tx,-50%),calc(-100% - 12px));background:var(--text);color:var(--bg);font-size:.74rem;line-height:1.3;padding:6px 10px;border-radius:8px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;z-index:2}
+.trip-tip.on{opacity:1}
+.trip-tip b{font-weight:600}
+.road-sum{margin:10px 0 0;font-size:.86rem;color:var(--muted)}
+.road-sum button{color:var(--muted);border-bottom:1px solid var(--rule);font-size:inherit;padding:0}
+.road-sum button:hover{color:var(--text);border-color:var(--text)}
+.next-strip{display:flex;align-items:center;gap:8px 14px;flex-wrap:wrap;margin-top:22px;padding:14px 16px;border-radius:14px;
+  background:color-mix(in srgb,#F5C518 9%,transparent);border:1px solid color-mix(in srgb,#F5C518 40%,transparent)}
+.next-strip .p{width:10px;height:10px;border-radius:50%;background:#F5C518;flex:none;animation:next-pulse 2.2s ease-in-out infinite}
+@keyframes next-pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,197,24,.55)}50%{box-shadow:0 0 0 8px rgba(245,197,24,0)}}
+.next-strip .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#A07A00}
+:root[data-theme=dark] .next-strip .k{color:#F5C518}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .next-strip .k{color:#F5C518}}
+.next-strip b{font-weight:600;color:var(--text)}
+.next-strip span.w{color:var(--body)}
+.trip-list{margin-top:6px}
+.trip-row{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:12px 4px;border-bottom:1px solid var(--rule);border-radius:6px;transition:background .2s}
+.trip-row:last-child{border-bottom:0}
+.trip-row .d{font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.trip-row b{font-weight:500;color:var(--text)}
+.trip-row .w{color:var(--muted)}
+.trip-row a{font-size:.82rem;color:var(--ink);border:0}
+.trip-row a:hover{color:var(--text)}
+.trip-row.hl{background:var(--surface)}
+.trip-more{display:block;margin-top:6px;font-size:.82rem;color:var(--muted);border-bottom:1px solid var(--rule);padding:0}
+.trip-more:hover{color:var(--text)}
+@media (prefers-reduced-motion:reduce){.trip.going:after,.next-strip .p{animation:none}}
+
+/* ===== Bits and pieces: planes, sonder, fun facts ===== */
+.oc-big{font-family:var(--display);font-weight:700;font-size:clamp(1.6rem,4.6vw,2.2rem);line-height:1.05;letter-spacing:-.025em;color:var(--text);margin:0}
+.oc-big.dim{color:var(--muted)}
+.oc-line{position:relative;height:28px;margin:4px 0;overflow:hidden}
+.oc-line:before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px dashed var(--rule)}
+@keyframes oc-fly{from{left:-8%}to{left:104%}}
+.oc-line svg{position:absolute;top:50%;width:26px;height:26px;margin-top:-13px;color:var(--trip-line);transform:rotate(90deg);animation:oc-fly 8s linear infinite}
+.oc-note{font-family:'Kalam',cursive;color:var(--ink);font-size:1.2rem;margin:14px 0 0}
+.sonder{margin:26px 0 0;background:#F4F1E8;color:#1C1C1A;border-radius:6px;padding:24px 26px;box-shadow:0 14px 34px rgba(0,0,0,.16);font-family:Georgia,'Times New Roman',serif}
+.sonder .w{font-size:1.9rem;font-weight:700;letter-spacing:-.01em}
+.sonder .ph{font-family:var(--mono);font-size:.78rem;color:#6B6A63;margin-left:10px}
+.sonder p{margin:10px 0 0;font-size:1.12rem;line-height:1.5}
+.sonder .src{font-size:.82rem;font-style:italic;color:#6B6A63}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:22px}
+.fact-card{text-align:left;min-height:140px;padding:18px;border-radius:14px;border:1px solid var(--rule);background:var(--surface);color:var(--text);display:flex;flex-direction:column;gap:10px;transition:transform .35s cubic-bezier(.34,1.56,.64,1),background .25s,color .25s}
+.fact-card:hover{transform:translateY(-3px) rotate(-.5deg)}
+.fact-card .k{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.fact-card .q{font-size:1.02rem;line-height:1.35;font-weight:500}
+.fact-card .a{display:none;font-size:1rem;line-height:1.4}
+.fact-card[aria-pressed=true]{background:var(--fc,#C6F432);border-color:var(--fc,#C6F432);color:#141414}
+.fact-card[aria-pressed=true] .k{color:rgba(20,20,20,.6)}
+.fact-card[aria-pressed=true] .q{display:none}
+.fact-card[aria-pressed=true] .a{display:block}
+.facts-hint{font-family:'Kalam',cursive;color:var(--ink);font-size:1.05rem}
+@media (prefers-reduced-motion:reduce){.oc-line svg{animation:none;left:60%}}
+
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html,body{overflow-x:clip}
 .reader .close .bk{display:none}
@@ -252,6 +324,38 @@ html,body{overflow-x:clip}
 
     <button class="rally-link" id="rallyBtn" type="button" aria-controls="court"><span class="ball" aria-hidden="true"></span><span class="lbl">Wanna rally?</span></button>
     <div class="court" id="court" hidden></div>
+  </section>
+
+  <section aria-labelledby="h-road">
+    <h2 id="h-road"><span class="dots" aria-hidden="true"><i></i><i></i></span>On the road</h2>
+    <p id="roadLede" style="margin-bottom:14px">Where squash took me this past year, and where it’s taking me next.</p>
+    <div class="trips-map" id="tripsMap">
+      <svg class="routes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path class="route" id="tripDone" fill="none" stroke="var(--trip-line)" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+        <path id="tripNext" fill="none" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="4 5" vector-effect="non-scaling-stroke"/>
+      </svg>
+      <svg class="trip-plane" id="tripPlane" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" fill="currentColor"/></svg>
+      <div class="trip-tip" id="tripTip" role="status"></div>
+    </div>
+    <p class="road-sum" id="roadSum"></p>
+    <div class="next-strip" id="nextStrip"></div>
+    <div class="trip-list" id="tripList"></div>
+  </section>
+
+  <section aria-labelledby="h-oc">
+    <h2 id="h-oc"><span class="dots" aria-hidden="true"><i></i><i></i></span>Bits and pieces</h2>
+    <p class="oc-big">I love planes.</p>
+    <div class="oc-line" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" fill="currentColor"/></svg></div>
+    <p class="oc-big dim">I hate travelling.</p>
+    <p class="oc-note">the irony, for a squash player. blame sonder ↓</p>
+    <div class="sonder">
+      <div><span class="w">sonder</span><span class="ph">/ˈsɒn.dər/ · noun</span></div>
+      <p>The realization that each random passerby is living a life as vivid and complex as your own.</p>
+      <p class="src">The Dictionary of Obscure Sorrows, John Koenig</p>
+    </div>
+    <p style="margin-top:18px">I sonder a lot, which is exactly why travelling gets to me.</p>
+    <div class="road-head" style="margin:34px 0 0"><h3 style="font-family:var(--display);font-size:1.2rem;color:var(--text)">Fun facts</h3><span class="facts-hint">tap a card to flip it</span></div>
+    <div class="facts" id="facts"></div>
   </section>
 
   <section aria-labelledby="h-c">
@@ -405,6 +509,109 @@ document.querySelectorAll('.filters button').forEach(b=>b.addEventListener('clic
   document.querySelectorAll('.entry').forEach(e=>e.hidden=f!=='all'&&e.dataset.k!==f);
   document.querySelectorAll('.year').forEach(y=>{let n=y.nextElementSibling,any=false;while(n&&n.classList.contains('entry')){if(!n.hidden)any=true;n=n.nextElementSibling}y.hidden=!any});
 }));
+</script>
+<script>
+/* On the road. Edit TRIPS to update: newest last. status: been | going. post = story slug. yr = within the last 12 months. */
+(function(){
+  const HOME={place:'Kuala Lumpur',lat:3.14,lon:101.69};
+  const TRIPS=[
+    {place:'Hong Kong',lat:22.3,lon:114.17,when:'2015',what:'Junior Open champion (U11)',country:'Hong Kong',cont:'AS',post:'hk-junior-2015'},
+    {place:'Jordan',lat:31.95,lon:35.93,when:'2017',what:'Asian Junior Champion (U13)',country:'Jordan',cont:'AS',post:'asian-junior-2017'},
+    {place:'Nancy',lat:48.69,lon:6.18,when:'2022',what:'World Juniors team bronze',country:'France',cont:'EU',post:'world-juniors-2022'},
+    {place:'Hartford',lat:41.76,lon:-72.68,when:'2022',what:'Freshman year at Trinity',country:'USA',cont:'NA',post:'trinity-2022'},
+    {place:'Australia',lat:-37.81,lon:144.96,when:'2023',what:'My last World Juniors',country:'Australia',cont:'OC',post:'world-juniors-2023'},
+    {place:'Perth',lat:-31.95,lon:115.86,when:'2024',what:'First PSA titles',country:'Australia',cont:'OC',post:'first-psa-titles'},
+    {place:'Sarawak',lat:1.55,lon:110.34,when:'2024',what:'SUKMA gold',country:'Malaysia',cont:'AS',post:'summer-2024'},
+    {place:'Kelowna',lat:49.89,lon:-119.5,when:'2025',what:'PSA title',country:'Canada',cont:'NA'},
+    {place:'Atlanta',lat:33.75,lon:-84.39,when:'2025',what:'PSA title',country:'USA',cont:'NA'},
+    {place:'Philadelphia',lat:39.95,lon:-75.17,when:'2026',what:'Nationals, 19–0',country:'USA',cont:'NA',post:'skillman',yr:1},
+    {place:'Hartford',lat:41.76,lon:-72.68,when:'May',what:'Graduation',country:'USA',cont:'NA',post:'graduation-2026',yr:1},
+    {place:'Chennai',lat:13.08,lon:80.27,when:'Jul',what:'PSA Challenger, won',country:'India',cont:'AS',post:'summer-2026',yr:1},
+    {place:'London, ON',lat:42.98,lon:-81.25,when:'Sep',what:'NASH Cup, won',country:'Canada',cont:'NA',post:'egyptian-open',yr:1},
+    {place:'Cairo',lat:30.04,lon:31.24,when:'Oct',what:'Egyptian Open',country:'Egypt',cont:'AF',post:'egyptian-open',yr:1},
+    {place:'Islamabad',lat:33.68,lon:73.05,when:'Nov',what:'Asian Teams, bronze',country:'Pakistan',cont:'AS',yr:1},
+    {place:'Cheongju',lat:36.64,lon:127.49,when:'Dec',what:'World Team Championships, playing for Malaysia',country:'South Korea',cont:'AS',going:1,yr:1}
+  ];
+  const map=document.getElementById('tripsMap');if(!map)return;
+  const L0=-130,L1=150,T=62,B=-42;   // must match img/world-dots.svg
+  const xy=t=>[(t.lon-L0)/(L1-L0)*100,(T-t.lat)/(T-B)*100];
+  const tip=document.getElementById('tripTip'),plane=document.getElementById('tripPlane'),done=document.getElementById('tripDone'),nextP=document.getElementById('tripNext');
+  const ctrl=(a,b)=>[(a[0]+b[0])/2,(a[1]+b[1])/2-Math.hypot(b[0]-a[0],(b[1]-a[1])/2.7)*.3];
+  const curve=(a,b)=>{const c=ctrl(a,b);return' Q '+c[0].toFixed(1)+' '+c[1].toFixed(1)+' '+b[0].toFixed(1)+' '+b[1].toFixed(1)};
+  let dots=[],range='year',expanded=false;
+  function tipFor(t){
+    if(!t){tip.classList.remove('on');return}
+    const p=xy(t);tip.textContent='';const b=document.createElement('b');b.textContent=t.place;tip.append(b,document.createTextNode(' · '+t.when+(t.what?' · '+t.what:'')));
+    tip.style.left=p[0]+'%';tip.style.top=p[1]+'%';tip.style.setProperty('--tx',p[0]>70?'calc(-100% + 16px)':p[0]<30?'-16px':'-50%');tip.classList.add('on');
+  }
+  function highlight(t){dots.forEach(d=>d.el.classList.toggle('on',d.t===t));document.querySelectorAll('.trip-row').forEach(r=>r.classList.toggle('hl',r._t===t));tipFor(t)}
+  function render(){
+    const list=TRIPS.filter(t=>range==='all'||t.yr),been=list.filter(t=>!t.going),going=list.filter(t=>t.going);
+    document.getElementById('roadLede').textContent=range==='all'?'Every trip squash has taken me on, since Hong Kong in 2015.':'Where squash took me this past year, and where it’s taking me next.';
+    // routes
+    let d='';been.forEach((t,i)=>{const p=xy(t);d+=i?curve(xy(been[i-1]),p):'M '+p[0].toFixed(1)+' '+p[1].toFixed(1)});
+    done.setAttribute('d',d);done.setAttribute('stroke-width',range==='all'?1.3:2);done.style.opacity=range==='all'?.6:1;   // all-time has many legs: keep it light
+    let n='',last=been[been.length-1],a=xy(last);going.forEach((t,i)=>{n+=(i?'':'M '+a[0].toFixed(1)+' '+a[1].toFixed(1))+curve(a,xy(t));a=xy(t)});
+    nextP.setAttribute('d',n);
+    // little plane, halfway along the next leg, pointing the way
+    if(going.length){const s=xy(last),e=xy(going[0]),c=ctrl(s,e),u=.55,
+        px=(1-u)*(1-u)*s[0]+2*(1-u)*u*c[0]+u*u*e[0],py=(1-u)*(1-u)*s[1]+2*(1-u)*u*c[1]+u*u*e[1],
+        dx=2*(1-u)*(c[0]-s[0])+2*u*(e[0]-c[0]),dy=(2*(1-u)*(c[1]-s[1])+2*u*(e[1]-c[1]))/2.7;
+      plane.style.left=px+'%';plane.style.top=py+'%';plane.style.transform='rotate('+(Math.atan2(dy,dx)*180/Math.PI+90)+'deg)';plane.style.display=''}
+    else plane.style.display='none';
+    // dots (one per place, plus home)
+    dots.forEach(d=>d.el.remove());dots=[];
+    const seen=new Map();list.forEach(t=>seen.set(t.place,t));
+    [{...HOME,home:1,when:'Home',what:''},...seen.values()].forEach(t=>{
+      const p=xy(t),el=document.createElement(t.post?'a':'button');
+      el.className='trip'+(t.home?' home':t.going?' going':'');el.style.left=p[0]+'%';el.style.top=p[1]+'%';
+      if(t.post)el.href='#/'+t.post;else el.type='button';
+      el.setAttribute('aria-label',t.place+', '+t.when+(t.what?': '+t.what:''));el.innerHTML='<i></i>';
+      el.addEventListener('pointerenter',()=>highlight(t));el.addEventListener('pointerleave',()=>highlight(null));
+      el.addEventListener('focus',()=>highlight(t));el.addEventListener('blur',()=>highlight(null));
+      if(!t.post)el.addEventListener('click',()=>highlight(t));
+      map.appendChild(el);dots.push({el,t});
+    });
+    // one quiet line of stats, with the range switch inside it
+    const countries=new Set(been.map(t=>t.country)),conts=new Set(been.map(t=>t.cont)),cities=new Set(been.map(t=>t.place));
+    const sum=document.getElementById('roadSum');sum.textContent='';
+    const sw=document.createElement('button');sw.type='button';
+    if(range==='all'){sum.append(countries.size+' countries and territories, '+conts.size+' continents, since 2015. ');sw.textContent='Back to this year';}
+    else{sum.append(cities.size+' cities, '+countries.size+' countries and '+conts.size+' continents this year. ');sw.textContent='See all time →';}
+    sw.addEventListener('click',()=>{range=range==='all'?'year':'all';expanded=false;highlight(null);render()});sum.appendChild(sw);
+    // next up
+    const ns=document.getElementById('nextStrip');ns.textContent='';ns.hidden=!going.length;
+    going.forEach(t=>{const p=document.createElement('span');p.className='p';const k=document.createElement('span');k.className='k';k.textContent='Next · '+t.when;
+      const b=document.createElement('b');b.textContent=t.place;const w=document.createElement('span');w.className='w';w.textContent=t.what;ns.append(p,k,b,w)});
+    // the trips, newest first
+    const rows=document.getElementById('tripList');rows.textContent='';
+    const ordered=[...been].reverse(),LIMIT=6;
+    ordered.forEach((t,ix)=>{
+      if(!expanded&&ix>=LIMIT)return;
+      const r=document.createElement('div');r.className='trip-row';r._t=t;
+      const d=document.createElement('span');d.className='d';d.textContent=t.when;
+      const m=document.createElement('span');const b=document.createElement('b');b.textContent=t.place;const w=document.createElement('span');w.className='w';w.textContent=' · '+t.what;m.append(b,w);
+      let e;if(t.post){e=document.createElement('a');e.href='#/'+t.post;e.textContent='Read →'}else e=document.createElement('span');
+      r.append(d,m,e);r.addEventListener('pointerenter',()=>highlight(t));r.addEventListener('pointerleave',()=>highlight(null));rows.appendChild(r);
+    });
+    if(!expanded&&ordered.length>LIMIT){const mo=document.createElement('button');mo.type='button';mo.className='trip-more';mo.textContent='Show all '+ordered.length;mo.addEventListener('click',()=>{expanded=true;render()});rows.appendChild(mo)}
+  }
+  document.addEventListener('click',e=>{if(!e.target.closest('#tripsMap'))tipFor(null)});
+  render();
+})();
+/* Off court: fun-fact cards (tap to flip). Only things Joachim has said. */
+(function(){
+  const F=[
+    ['Sunsets','There’s a sunset pic from almost every tournament.','Malaysia, Perth, Australia, Cairo. Except summer 2026: I was too busy being present.','#F5C518'],
+    ['Court','I once took a game off the world No. 1.','Mostafa Asal, at the Egyptian Open in Cairo, October 2026. What an experience.','#86B4FF'],
+    ['Code','My computer science degree had a co-author.','No easy feat, and I couldn’t have done it without AI.','#F2A9C4'],
+    ['Home','My dad’s best advice:','“Go where is best for your soul.” So home is where I was, summer 2026.','#D9D3C4']
+  ];
+  const box=document.getElementById('facts');if(!box)return;
+  F.forEach(([k,q,a,c])=>{const b=document.createElement('button');b.type='button';b.className='fact-card';b.style.setProperty('--fc',c);b.setAttribute('aria-pressed','false');
+    const kk=document.createElement('span');kk.className='k';kk.textContent=k;const qq=document.createElement('span');qq.className='q';qq.textContent=q;const aa=document.createElement('span');aa.className='a';aa.textContent=a;
+    b.append(kk,qq,aa);b.addEventListener('click',()=>b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true'));box.appendChild(b)});
+})();
 </script>
 </body>
 </html>
