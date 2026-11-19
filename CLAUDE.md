@@ -5,7 +5,7 @@ Personal website for Joachim Chuah: Malaysian professional squash player (PSA Wo
 The site is a **logbook**: a minimal, single-column, dated log of squash results and code projects, newest first, with short stories (blog posts) behind some entries.
 
 ## Files
-- `index.html`: the page. Header, intro, quote of the day, the log, contact. Page-specific CSS and JS (margin notes, polaroids, reading panel, Markdown reader) are inline.
+- `index.html`: the page. Header, intro, "What I’m chefing" card, the log, On the road, contact. Page-specific CSS and JS (margin notes, polaroids, reading panel, Markdown reader) are inline.
 - `assets/site.css`: shared tokens (light + dark), section labels, quote card, rally game, toggles.
 - `index.html` loads them as `assets/site.css?v=N` / `assets/site.js?v=N`: **bump N whenever either file changes**, or browsers keep serving the old cached copy.
 - `assets/site.js`: sound engine, theme + sound toggles, clocks, quote of the day (`QUOTES`), fact of the day (`FACTS`), the mini rally game.
@@ -19,7 +19,7 @@ The site is a **logbook**: a minimal, single-column, dated log of squash results
 - Posts are fetched, so **previewing needs a local server** (`python3 -m http.server 8765` in this folder, then http://127.0.0.1:8765/). Opening the file directly can't load posts.
 - **Sounds** (Web Audio, no files): click = "Pop" (press + release), hover tick only on the All/Court/Code pills, "single bloop" when a margin note appears. Mute toggle saved in localStorage (`jc-sound`). Audio starts after the visitor's first click.
 - **Theme:** `data-theme` on `<html>`, set before paint from localStorage (`jc-theme`) or the OS. Toggle in the header.
-- **Quote of the day:** short, simple motivation lines (no attribution). Same for every visitor each day; cycles through the whole list before repeating. Fact of the day sits under it.
+- **"What I’m chefing" card** (replaced the quote-of-the-day card, Nov 2026): "On the stove" (now) and "On the menu" (next), items tagged `.tag code` or `.tag food` (Joachim cooks real food too). Edit the `<figure class="chef">` markup directly and update the month label. Only list things Joachim has named; use TBD otherwise. The old QUOTES/FACTS code in site.js is unused now (no-ops without `.qotd`).
 
 ## Direction (decided with Joachim)
 - Minimal and calm. Modest tone: let facts speak, avoid a highlight-reel feel (a chapter-style "story" version was rejected as too self-centred).

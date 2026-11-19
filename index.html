@@ -194,6 +194,30 @@ body.reading{overflow:hidden}
 @media (prefers-reduced-motion:reduce){.trip.going:after,.next-strip .p{animation:none}}
 
 
+/* ===== What I'm chefing card ===== */
+.chef{margin-top:40px;padding:20px 22px;background:var(--surface);border-radius:14px}
+.chef .lbl{font-size:.74rem;color:var(--muted);display:flex;justify-content:space-between;gap:12px;margin-bottom:14px}
+.chef-cols{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.chef-col{padding:0 18px}
+.chef-col:first-child{padding-left:0;border-right:1px dashed var(--rule)}
+.chef-col:last-child{padding-right:0}
+.chef h3{font-family:var(--display);font-size:1.15rem;font-weight:700;letter-spacing:-.01em;color:var(--text);display:flex;align-items:center;gap:8px;margin:0 0 10px}
+.chef .next h3{color:var(--muted)}
+.chef ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.chef li{display:flex;flex-direction:column;line-height:1.35}
+.chef li a,.chef li b{color:var(--text);font-weight:600;width:fit-content}
+.chef li a{background:linear-gradient(var(--hl),var(--hl)) 0 88%/100% .45em no-repeat}
+.chef li>span{font-size:.88rem;color:var(--muted);margin-top:2px}
+.chef .it{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chef .tbd{color:var(--muted)!important;font-weight:500!important}
+.tag.food{background:rgba(245,197,24,.2);color:#8A6A00}
+:root[data-theme=dark] .tag.food{color:#F5C518}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .tag.food{color:#F5C518}}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 0 rgba(198,244,50,.6);animation:chef-pulse 2s ease-out infinite;flex:none}
+@keyframes chef-pulse{70%{box-shadow:0 0 0 8px rgba(198,244,50,0)}100%{box-shadow:0 0 0 0 rgba(198,244,50,0)}}
+@media (max-width:560px){.chef-cols{grid-template-columns:1fr}.chef-col{padding:0}.chef-col:first-child{border-right:0;border-bottom:1px dashed var(--rule);padding-bottom:16px;margin-bottom:16px}}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html,body{overflow-x:clip}
 .reader .close .bk{display:none}
@@ -251,9 +275,24 @@ html,body{overflow-x:clip}
   </header>
 
   <p class="intro">I play squash for <span class="hl">Malaysia</span> and build things in between. Some days the code works, some days the drop shot does. Rarely <span class="hl">both</span>. The sunsets though, they never miss :)
-  <figure class="qotd" aria-live="polite">
-    <div class="lbl"><span>Quote of the day</span><span id="q-date"></span></div>
-    <blockquote id="q-text"></blockquote><cite id="q-who"></cite>
+  <figure class="chef" aria-labelledby="chef-lbl">
+    <div class="lbl"><span id="chef-lbl">What I’m chefing</span><span>Nov 2026</span></div>
+    <div class="chef-cols">
+      <div class="chef-col now">
+        <h3><i class="pulse" aria-hidden="true"></i>On the stove</h3>
+        <ul>
+          <li><div class="it"><span class="tag code">Code</span><a href="https://github.com/Joachim-Chuah/regression-classification-model">r-c-model</a></div><span>Predictions twice a day, retrained every week</span></li>
+          <li><div class="it"><span class="tag code">Code</span><b>This website</b></div><span>You’re looking at it</span></li>
+          <li><div class="it"><span class="tag food">Food</span><b class="tbd">TBD</b></div></li>
+        </ul>
+      </div>
+      <div class="chef-col next">
+        <h3>On the menu</h3>
+        <ul>
+          <li><div class="it"><b class="tbd">TBD</b></div></li>
+        </ul>
+      </div>
+    </div>
   </figure>
 
   <section aria-labelledby="h-log">
